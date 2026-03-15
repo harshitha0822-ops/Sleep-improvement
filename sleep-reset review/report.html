@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleep Report - Sleep Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<div class="form-container" style="flex-direction:column;">
+    <div class="form-box">
+
+        <h2 style="text-align:center;">Weekly Sleep Intelligence Report</h2>
+
+        <!-- Sleep Trend -->
+        <h3 style="margin-top:30px;">Sleep Hours Trend</h3>
+        <canvas id="sleepChart" height="120"></canvas>
+
+        <!-- Performance Correlation -->
+        <h3 style="margin-top:40px;">Sleep Score vs Productivity</h3>
+        <canvas id="performanceChart" height="120"></canvas>
+
+        <!-- Burnout Warning -->
+        <h3 style="margin-top:40px;">Burnout Risk Analysis</h3>
+        <p id="burnoutWarning" style="font-size:18px; font-weight:bold;"></p>
+
+    </div>
+</div>
+
+<script>
+    const sleepData = JSON.parse(localStorage.getItem('sleepData')) || [];
+
+    const warning = document.getElementById('burnoutWarning');
+
+    // 🔹 If no data entered
+    if (sleepData.length === 0) {
+        warning.textContent = "No sleep records found. Please add sleep entries.";
+        warning.style.color = "#ff6961";
+    } else {
+
+        const labels = sleepData.map((d, index) => "Day " + (index + 1));
+        const hoursData = sleepData.map(d => Number(d.hours));
+        const scoreData = sleepData.map(d => Number(d.sleepScore));
+        const productivityData = sleepData.map(d => Number(d.productivity));
+
+        // ===== Sleep Hours Line Chart =====
+        new Chart(document.getElementById('sleepChart'), {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Sleep Hours',
+                    data: hoursData,
+                    borderColor: '#1c92d2',
+                    backgroundColor: 'rgba(28,146,210,0.25)',
+                    borderWidth: 3,
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        ticks: { color: 'white' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 12,
+                        ticks: { color: 'white' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // ===== Sleep Score vs Productivity Bar Chart =====
+        new Chart(document.getElementById('performanceChart'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Sleep Score',
+                        data: scoreData,
+                        backgroundColor: '#1c92d2'
+                    },
+                    {
+                        label: 'Productivity',
+                        data: productivityData,
+                        backgroundColor: '#2c5364'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        ticks: { color: 'white' }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: { color: 'white' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: { color: 'white' }
+                    }
+                }
+            }
+        });
+
+        // ===== Burnout Detection Logic =====
+        let totalHours = hoursData.reduce((a, b) => a + b, 0);
+        let avgHours = totalHours / hoursData.length;
+
+        if (avgHours < 6) {
+            warning.textContent = "⚠ Burnout Risk Detected: Your average sleep is below 6 hours.";
+            warning.style.color = "#ff6961";
+        } else if (avgHours < 7) {
+            warning.textContent = "⚠ Moderate Risk: Improve sleep consistency.";
+            warning.style.color = "#ffd966";
+        } else {
+            warning.textContent = "✓ Healthy Sleep Pattern Maintained.";
+            warning.style.color = "#77dd77";
+        }
+    }
+</script>
+
+</body>
+</html>

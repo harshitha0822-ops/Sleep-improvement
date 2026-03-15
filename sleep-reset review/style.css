@@ -1,0 +1,214 @@
+/* ===== Global Reset ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Century Gothic', sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: linear-gradient(to right, #0f2027, #2c5364);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.navbar h2 {
+    color: white;
+}
+
+.navbar a {
+    text-decoration: none;
+    background: #1c3b57;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.navbar a:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Hero Section ===== */
+.hero {
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 40px;
+}
+
+.hero-text {
+    max-width: 500px;
+}
+
+.hero-text h1 {
+    font-size: 48px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 18px;
+    margin-bottom: 30px;
+    color: white;
+}
+
+.btn-primary {
+    padding: 14px 30px;
+    border-radius: 30px;
+    border: none;
+    background: linear-gradient(to right, #1c92d2, #2c5364);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+}
+
+/* ===== Cards ===== */
+.card {
+    background: #1c3b57;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transition: 0.4s;
+    color: white;
+}
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
+/* ===== Grid Layout ===== */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 60px;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+    padding: 60px;
+}
+
+/* ===== Forms ===== */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+}
+
+.form-box {
+    width: 400px;
+    background: #1c3b57;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    color: white;
+}
+
+.form-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: white;
+}
+
+.form-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 10px;
+    border: 1px solid #3a5f7d;
+    background: #2c5364;
+    color: white;
+}
+
+.form-box input::placeholder {
+    color: #cfd8dc;
+}
+
+.form-box button {
+    width: 100%;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    background: linear-gradient(to right, #1c92d2, #2c5364);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+/* ===== Dashboard Cards ===== */
+.stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+}
+
+.stat-card {
+    background: #1c3b57;
+    padding: 30px;
+    width: 220px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    color: white;
+}
+
+/* ===== FAQ Section ===== */
+.faq {
+    padding: 60px;
+}
+
+.faq-item {
+    background: #1c3b57;
+    margin-bottom: 15px;
+    padding: 20px;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    color: white;
+}
+
+.faq-answer {
+    display: none;
+    margin-top: 10px;
+    color: #e0e0e0;
+}
+
+/* ===== Footer / Contact ===== */
+footer {
+    background: #0f2027;
+    padding: 30px;
+    text-align: center;
+    color: white;
+    margin-top: 40px;
+}
+.testimonials{
+margin-top: 60px;
+}
+.section-title{
+text-align: center;
+margin-bottom: 40px;
+font-size: 28px;
+font-weight: 600;
+}

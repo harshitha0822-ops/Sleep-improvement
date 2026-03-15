@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Sleep Intelligence</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <h2>Sleep Intelligence</h2>
+    <a href="index.html">Logout</a>
+</div>
+
+<section style="padding:40px;">
+
+    <!-- Welcome -->
+    <h1 style="color:#1c92d2; margin-bottom:20px;">
+        Welcome, <span id="usernameDisplay"></span> 🌸
+    </h1>
+    <p>Here’s a quick overview of your sleep performance.</p>
+
+    <!-- Stats -->
+    <div class="stats" style="margin-top:40px;">
+        <div class="stat-card">
+            <h3>Sleep Score</h3>
+            <h2 id="sleepScore">--</h2>
+        </div>
+        <div class="stat-card">
+            <h3>Consistency</h3>
+            <h2 id="consistencyScore">--</h2>
+        </div>
+        <div class="stat-card">
+            <h3>Sleep Debt</h3>
+            <h2 id="sleepDebt">--</h2>
+        </div>
+    </div>
+
+    <!-- Pie Chart -->
+    <div style="margin-top:50px; text-align:center;">
+        <h3>Your Sleep Improvement</h3>
+        <canvas id="improvementChart" width="300" height="300"></canvas>
+    </div>
+
+    <!-- Report Button -->
+    <div style="text-align:center; margin-top:30px;">
+        <a href="report.html">
+            <button class="btn-primary">View Report</button>
+        </a>
+    </div>
+
+</section>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+
+    // ✅ Load username
+    const user = localStorage.getItem("loggedInUser");
+    if(user){
+        document.getElementById("usernameDisplay").textContent = user;
+    }
+
+    // ✅ Load sleep data
+    const sleepData = JSON.parse(localStorage.getItem('sleepData') || "[]");
+
+    if (sleepData.length > 0){
+        const last = sleepData[sleepData.length -1];
+
+        document.getElementById('sleepScore').textContent = last.sleepScore + "/100";
+        document.getElementById('consistencyScore').textContent = last.consistency;
+
+        const debt = 8 - last.hours;
+        document.getElementById('sleepDebt').textContent =
+            debt < 0 ? "0h" : debt.toFixed(1) + "h";
+
+        // ✅ Pie Chart
+        const ctx = document.getElementById('improvementChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Achieved', 'Remaining'],
+                datasets: [{
+                    data: [last.sleepScore, 100 - last.sleepScore],
+                    backgroundColor: ['#1c92d2', '#d3d3d3']
+                }]
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

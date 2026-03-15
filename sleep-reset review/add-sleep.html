@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Sleep - Sleep Intelligence</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+<section style="padding:40px;">
+
+    <h1 style="color:#1c92d2; margin-bottom:20px;">Add Your Sleep Entry 🌙</h1>
+    <p>Track your sleep, productivity, and mood to improve performance and well-being.</p>
+
+    <!-- Sleep Form -->
+    <div class="form-container">
+        <div class="form-box">
+            <h2>Sleep Entry</h2>
+            <form id="sleepForm">
+                <input type="number" id="sleepHours" name="sleepHours" placeholder="Sleep Hours (e.g., 7.5)" step="0.1" required>
+                <input type="time" id="sleepTime" name="sleepTime" required>
+                <input type="time" id="wakeTime" name="wakeTime" required>
+                <input type="number" id="productivity" name="productivity" placeholder="Productivity Rating (1-10)" min="1" max="10" required>
+                <input type="number" id="mood" name="mood" placeholder="Mood Rating (1-10)" min="1" max="10" required>
+                <button type="submit" class="btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div id="results" style="margin-top:30px; display:none;">
+        <h2>Your Sleep Analysis</h2>
+        <div class="stats">
+
+            <div class="stat-card">
+                <h3>Sleep Score</h3>
+                <h2 id="sleepScore">--</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Consistency</h3>
+                <h2 id="consistency"></h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Suggestions</h3>
+                <p id="suggestions"></p>
+            </div>
+
+        </div>
+
+        <!-- Optionally show last 5 entries -->
+        <div id="pastEntries" style="margin-top:30px;">
+            <h3>Last Sleep Entries</h3>
+            <ul id="entriesList" style="list-style:none; padding-left:0;"></ul>
+        </div>
+
+        <button id="viewDashboard" class="btn-primary" style="margin-top:30px;">View Dashboard</button>
+    </div>
+
+</section>
+
+<script>
+// Form submit logic
+const form = document.getElementById('sleepForm');
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const hours = parseFloat(form.sleepHours.value);
+    const productivity = parseInt(form.productivity.value);
+    const mood = parseInt(form.mood.value);
+
+    // Sleep Score calculation
+    let sleepScore = Math.round((hours/8)*50 + (productivity + mood)/2 * 5);
+    if(sleepScore > 100) sleepScore = 100;
+
+    let consistency = hours >=7 && hours <=9 ? "Good" : "Needs Improvement";
+
+    // Suggestions logic
+    let suggestions = "";
+    if(hours <7) suggestions += "Try sleeping more hours. ";
+    else if(hours >9) suggestions += "Avoid oversleeping. ";
+    else suggestions += "Sleep duration is good. ";
+    if(consistency !== "Good") suggestions += "Maintain a consistent sleep schedule.";
+    else suggestions += " Keep up your consistent sleep schedule!";
+
+    // Display results
+    document.getElementById('sleepScore').textContent = sleepScore + "/100";
+    document.getElementById('consistency').textContent = consistency;
+    document.getElementById('suggestions').textContent = suggestions;
+    document.getElementById('results').style.display = "block";
+
+    // Save data to localStorage
+    let sleepData = JSON.parse(localStorage.getItem('sleepData') || "[]");
+    let entry = {
+        date: new Date().toLocaleDateString(),
+        hours,
+        productivity,
+        mood,
+        sleepScore,
+        consistency
+    };
+    sleepData.push(entry);
+    localStorage.setItem('sleepData', JSON.stringify(sleepData));
+
+    // Show last 5 entries
+    const entriesList = document.getElementById('entriesList');
+    entriesList.innerHTML = "";
+    sleepData.slice(-5).reverse().forEach(d => {
+        const li = document.createElement('li');
+        li.textContent = `${d.date}: ${d.hours}h, Score: ${d.sleepScore}, Consistency: ${d.consistency}`;
+        entriesList.appendChild(li);
+    });
+});
+
+// Redirect to report page
+document.getElementById('viewDashboard').addEventListener('click', function() {
+    window.location.href = "dashboard.html";
+});
+</script>
+
+</body>
+</html>
